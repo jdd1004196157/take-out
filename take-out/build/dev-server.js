@@ -26,6 +26,7 @@ const proxyTable = config.dev.proxyTable
 
 const app = express()
 const compiler = webpack(webpackConfig)
+//git test
 
 //////////////////////////////////////////////////////////////////自己添加代码
 // 引入数据库文件
