@@ -9,6 +9,9 @@ if (!process.env.NODE_ENV) {
 const opn = require('opn')
 const path = require('path')
 const express = require('express')
+
+
+
 const webpack = require('webpack')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = require('./webpack.dev.conf')
@@ -23,6 +26,40 @@ const proxyTable = config.dev.proxyTable
 
 const app = express()
 const compiler = webpack(webpackConfig)
+
+//////////////////////////////////////////////////////////////////自己添加代码
+// 引入数据库文件
+var appData = require('../data.json')
+// 引入数据库
+var apiRoutes = express.Router()
+//使用api的方法来创建连接时候的请求
+apiRoutes.get('/getseller', function (req, res) {
+  res.json({
+    errno: 0 ,
+    data: appData.seller
+  });
+})
+apiRoutes.get('/getgoods', function (req, res) {
+  res.json({
+    errno: 0 ,
+    data: appData.goods
+  });
+})
+apiRoutes.get('/getrating', function (req, res) {
+  res.json({
+    errno: 0 ,
+    data: appData.ratings
+  });
+})
+// 调用api
+app.use('/api', apiRoutes)
+// app.use('/api/getBoardList', function (req, res) {
+//   res.json({
+//     errno: 0 ,
+//     data: getBoardList
+//   });
+// })
+////////////////////////////////////////////////////////////////////////
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
